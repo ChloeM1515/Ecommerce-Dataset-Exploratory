@@ -1,6 +1,9 @@
---Lưu ý chung: với Bigquery thì mình có thể groupby, orderby 1,2,3(1,2,3() ở đây là thứ tự của column mà mình select nhé
+-- Data Cleaning: After reviewing, the dataset is quite clear so I keep the original format.
 
---Q1: Calculate total visit, pageview, transaction and revenue for Jan, Feb and March 2017 (order by month) -- DONE
+-- Data Exploratory:
+
+
+--Query 1: Calculate total visit, pageview, transaction and revenue for Jan, Feb and March 2017 (order by month)
 SELECT
   format_date ('%Y%m', parse_date('%Y%m%d', date)) as month,
   sum(totals.visits) as visits,
@@ -10,7 +13,7 @@ FROM `bigquery-public-data.google_analytics_sample.ga_sessions_2017*`
 WHERE _table_suffix between '0101' and '0331'
 group by month  --group by 1
 order by month; --order by 1
---correct
+
 
 --Query 02: Bounce rate per traffic source in July 2017 (Bounce_rate = num_bounce/total_visit) (order by total_visit DESC) -- DONE
 SELECT 
@@ -21,10 +24,9 @@ SELECT
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201707*`
 GROUP BY trafficsource.source
 ORDER BY total_visits DESC;
---correct
 
 
---Query 3: Revenue by traffic source by week, by month in June 2017 -- DONE
+--Query 3: Revenue by traffic source by week, by month in June 2017
 SELECT
   "Month" as time_type,
   format_date ('%Y%m', parse_date('%Y%m%d', date)) as time,
@@ -47,9 +49,9 @@ UNNEST (hits) AS hits,
 UNNEST (hits.product) AS product
 GROUP BY time, source
 ORDER BY Revenue DESC;
---correct
 
---Query 04: Average number of pageviews by purchaser type (purchasers vs non-purchasers) in June, July 2017 --DONE
+
+--Query 04: Average number of pageviews by purchaser type (purchasers vs non-purchasers) in June, July 2017
 WITH Purchaser AS (
     SELECT 
         format_date('%Y%m', parse_date('%Y%m%d', date)) as month,
@@ -76,9 +78,9 @@ SELECT Month,
       avg_pageviews_purchase, 
       avg_pageviews_non_purchase
 FROM Purchaser
-INNER JOIN Non_Purchaser --LEFT JOIN Non_Purchaser
+LEFT JOIN Non_Purchaser --LEFT JOIN Non_Purchaser
 USING (month);
---correct
+
 
 --câu 4 này lưu ý là mình nên dùng left join hoặc full join, bởi vì trong câu này, phạm vi chỉ từ tháng 6-7, nên chắc chắc sẽ có pur và nonpur của cả 2 tháng
 --mình inner join thì vô tình nó sẽ ra đúng. nhưng nếu đề bài là 1 khoảng thời gian dài hơn, 2-3 năm chẳng hạn, nó cũng tháng chỉ có nonpur mà k có pur
