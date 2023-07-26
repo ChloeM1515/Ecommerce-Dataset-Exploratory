@@ -78,15 +78,11 @@ SELECT Month,
       avg_pageviews_purchase, 
       avg_pageviews_non_purchase
 FROM Purchaser
-LEFT JOIN Non_Purchaser --LEFT JOIN Non_Purchaser
+LEFT JOIN Non_Purchaser
 USING (month);
 
 
---câu 4 này lưu ý là mình nên dùng left join hoặc full join, bởi vì trong câu này, phạm vi chỉ từ tháng 6-7, nên chắc chắc sẽ có pur và nonpur của cả 2 tháng
---mình inner join thì vô tình nó sẽ ra đúng. nhưng nếu đề bài là 1 khoảng thời gian dài hơn, 2-3 năm chẳng hạn, nó cũng tháng chỉ có nonpur mà k có pur
---thì khi đó inner join nó sẽ làm mình bị mất data, thay vì hiện số của nonpur và pur thì nó để trống
-
---Query 05: Average number of transactions per user that made a purchase in July 2017 - DONE
+--Query 05: Average number of transactions per user that made a purchase in July 2017 
 SELECT format_date('%Y%m', parse_date('%Y%m%d', date)) as month,
       sum (totals.transactions)/ count (distinct fullvisitorID) as Avg_total_transactions_per_user
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_201707*`,
@@ -95,7 +91,7 @@ UNNEST (hits.product) AS product
 WHERE totals.transactions >=1 
 and product.productRevenue is not null
 GROUP BY month;
---correct 
+
 
 --Query 06: Average amount of money spent per session. Only include purchaser data in July 2017 -- Ket qua chua ra dung
 -- Why dung fullvisitorID dc ma fullvisitID ko duoc
