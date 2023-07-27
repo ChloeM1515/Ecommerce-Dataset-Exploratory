@@ -8,8 +8,8 @@ SELECT
   sum(totals.transactions) as transactions,
 FROM `bigquery-public-data.google_analytics_sample.ga_sessions_2017*`
 WHERE _table_suffix between '0101' and '0331'
-group by month  --group by 1
-order by month; --order by 1
+group by month  
+order by month; 
 
 
 --Query 2: Bounce rate per traffic source in July 2017 (Bounce_rate = num_bounce/total_visit) 
