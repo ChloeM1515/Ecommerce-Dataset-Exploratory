@@ -1,7 +1,3 @@
--- Data Cleaning: After reviewing, the dataset is quite clear so I keep the original format.
-
--- Data Exploratory:
-
 
 --Query 1: Calculate total visit, pageview, transaction and revenue for Jan, Feb and March 2017 
 
